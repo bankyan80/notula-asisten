@@ -1,0 +1,824 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0757a8" />
+    <meta
+      name="description"
+      content="Notula Assistent - Asisten cerdas untuk merekam, mentranskrip, dan merangkum rapat."
+    />
+    <title>Notula Assistent</title>
+    <style>
+      :root {
+        --blue: #0757a8;
+        --blue2: #0b72d9;
+        --light: #eef6ff;
+        --text: #172033;
+        --muted: #718096;
+        --line: #e4ebf3;
+        --green: #12a66a;
+        --red: #ef4444;
+        --shadow: 0 8px 28px rgba(15, 55, 100, 0.1);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family:
+          Inter,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          sans-serif;
+        background: #edf2f7;
+        color: var(--text);
+      }
+      .app {
+        max-width: 480px;
+        min-height: 100vh;
+        margin: auto;
+        background: #f8fbff;
+        position: relative;
+        padding-bottom: 78px;
+      }
+      .top {
+        background: linear-gradient(145deg, #06498e, #0b70d3);
+        color: #fff;
+        padding: 22px 20px 28px;
+        border-radius: 0 0 28px 28px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .logo {
+        width: 48px;
+        height: 48px;
+        border-radius: 15px;
+        background: #fff;
+        color: var(--blue);
+        display: grid;
+        place-items: center;
+        font-size: 25px;
+        box-shadow: 0 6px 18px #003d7a55;
+      }
+      .brand h1 {
+        font-size: 21px;
+        margin: 0;
+      }
+      .brand p {
+        font-size: 12px;
+        margin: 3px 0 0;
+        opacity: 0.86;
+      }
+      .welcome {
+        margin-top: 28px;
+      }
+      .welcome h2 {
+        margin: 0;
+        font-size: 24px;
+      }
+      .welcome p {
+        margin: 6px 0 0;
+        opacity: 0.82;
+        font-size: 13px;
+      }
+      .content {
+        padding: 18px 16px;
+      }
+      .card {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 16px;
+        margin-bottom: 14px;
+        box-shadow: var(--shadow);
+      }
+      .record {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: linear-gradient(135deg, #0875df, #0757a8);
+        color: white;
+        border: 0;
+        padding: 18px;
+      }
+      .record .mic {
+        width: 52px;
+        height: 52px;
+        background: #ffffff22;
+        border-radius: 17px;
+        display: grid;
+        place-items: center;
+        font-size: 26px;
+      }
+      .record h3 {
+        margin: 0 0 4px;
+        font-size: 17px;
+      }
+      .record p {
+        margin: 0;
+        font-size: 12px;
+        opacity: 0.85;
+      }
+      .arrow {
+        font-size: 24px;
+      }
+      .section-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 20px 2px 10px;
+      }
+      .section-title h3 {
+        font-size: 15px;
+        margin: 0;
+      }
+      .section-title span {
+        font-size: 12px;
+        color: var(--blue);
+      }
+      .meeting {
+        display: flex;
+        gap: 13px;
+        align-items: center;
+      }
+      .meeting-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 14px;
+        background: #eaf4ff;
+        color: var(--blue);
+        display: grid;
+        place-items: center;
+        font-size: 21px;
+      }
+      .meeting h4 {
+        margin: 0 0 4px;
+        font-size: 14px;
+      }
+      .meeting p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .badge {
+        margin-left: auto;
+        background: #e7f8f0;
+        color: #0b9560;
+        border-radius: 20px;
+        padding: 5px 9px;
+        font-size: 10px;
+        font-weight: 700;
+      }
+      .bottom {
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 480px;
+        width: 100%;
+        height: 70px;
+        background: #fff;
+        border-top: 1px solid var(--line);
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 10;
+      }
+      .nav {
+        border: 0;
+        background: none;
+        color: #8995a5;
+        font-size: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+      }
+      .nav b {
+        font-size: 21px;
+        font-weight: 500;
+      }
+      .nav.active {
+        color: var(--blue);
+        font-weight: 700;
+      }
+      .screen {
+        display: none;
+      }
+      .screen.active {
+        display: block;
+      }
+      .backbar {
+        height: 65px;
+        background: linear-gradient(145deg, #06498e, #0b70d3);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        padding: 0 18px;
+        gap: 15px;
+      }
+      .backbar button {
+        background: none;
+        border: 0;
+        color: #fff;
+        font-size: 25px;
+      }
+      .backbar h2 {
+        font-size: 17px;
+        margin: 0;
+      }
+      .form-card h3 {
+        font-size: 16px;
+        margin-top: 0;
+      }
+      .input {
+        width: 100%;
+        padding: 13px 14px;
+        border: 1px solid var(--line);
+        border-radius: 13px;
+        margin: 7px 0 13px;
+        font-size: 14px;
+        outline: none;
+      }
+      .input:focus {
+        border-color: var(--blue);
+      }
+      .wave {
+        height: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        margin: 15px 0;
+      }
+      .wave i {
+        display: block;
+        width: 4px;
+        border-radius: 5px;
+        background: #1a73e8;
+        animation: pulse 1s infinite ease-in-out;
+      }
+      .wave i:nth-child(3n) {
+        height: 55px;
+      }
+      .wave i:nth-child(3n + 1) {
+        height: 28px;
+      }
+      .wave i:nth-child(3n + 2) {
+        height: 42px;
+      }
+      @keyframes pulse {
+        50% {
+          transform: scaleY(0.55);
+          opacity: 0.55;
+        }
+      }
+      .timer {
+        text-align: center;
+        font-size: 35px;
+        font-weight: 800;
+        letter-spacing: 1px;
+      }
+      .status {
+        text-align: center;
+        color: var(--red);
+        font-size: 12px;
+        margin: 5px;
+      }
+      .controls {
+        display: flex;
+        justify-content: center;
+        gap: 22px;
+        margin: 22px 0;
+      }
+      .ctrl {
+        border: 0;
+        border-radius: 50%;
+        width: 54px;
+        height: 54px;
+        background: #edf4fb;
+        color: #164b78;
+        font-size: 20px;
+      }
+      .ctrl.stop {
+        width: 68px;
+        height: 68px;
+        background: var(--red);
+        color: #fff;
+        box-shadow: 0 8px 20px #ef444455;
+      }
+      .note {
+        background: #edf7ff;
+        border-radius: 15px;
+        padding: 13px;
+        font-size: 12px;
+        color: #41627e;
+        line-height: 1.5;
+      }
+      .tabs {
+        display: flex;
+        border-bottom: 1px solid var(--line);
+        margin-bottom: 12px;
+      }
+      .tab {
+        flex: 1;
+        padding: 12px 5px;
+        border: 0;
+        background: none;
+        color: #8490a0;
+        font-size: 12px;
+      }
+      .tab.active {
+        color: var(--blue);
+        border-bottom: 2px solid var(--blue);
+        font-weight: 700;
+      }
+      .search {
+        padding: 11px 13px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        width: 100%;
+        margin-bottom: 12px;
+      }
+      .trans {
+        display: flex;
+        gap: 9px;
+        margin: 13px 0;
+      }
+      .avatar {
+        min-width: 28px;
+        height: 28px;
+        border-radius: 9px;
+        background: #1475dc;
+        color: #fff;
+        display: grid;
+        place-items: center;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .trans time {
+        font-size: 10px;
+        color: #8793a1;
+      }
+      .trans strong {
+        display: block;
+        font-size: 12px;
+        margin: 2px 0 4px;
+      }
+      .trans p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+      .highlight {
+        background: #eaf4ff;
+        padding: 10px;
+        border-radius: 12px;
+      }
+      .summary-title {
+        font-size: 17px;
+        margin: 0 0 6px;
+      }
+      .summary-meta {
+        font-size: 11px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+      .ai {
+        background: linear-gradient(135deg, #eef4ff, #f5f0ff);
+        padding: 14px;
+        border-radius: 16px;
+        margin: 15px 0;
+      }
+      .ai strong {
+        color: #5b45d9;
+        font-size: 12px;
+      }
+      .ai p {
+        font-size: 12px;
+        line-height: 1.55;
+        margin: 7px 0 0;
+      }
+      .list {
+        padding-left: 19px;
+        font-size: 12px;
+        line-height: 1.7;
+      }
+      .task {
+        display: grid;
+        grid-template-columns: 1fr 85px 70px;
+        gap: 5px;
+        font-size: 11px;
+        padding: 9px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .export-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .export {
+        border: 1px solid var(--line);
+        background: #fff;
+        border-radius: 15px;
+        padding: 15px;
+        text-align: left;
+      }
+      .export b {
+        display: block;
+        font-size: 13px;
+      }
+      .export span {
+        font-size: 10px;
+        color: var(--muted);
+      }
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 82px;
+        transform: translateX(-50%);
+        background: #172033;
+        color: #fff;
+        padding: 10px 15px;
+        border-radius: 12px;
+        font-size: 12px;
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.3s;
+        z-index: 20;
+      }
+      .toast.show {
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <section id="home" class="screen active">
+        <header class="top">
+          <div class="brand">
+            <div class="logo">🎙️</div>
+            <div>
+              <h1>Notula Assistent</h1>
+              <p>Asisten cerdas untuk setiap rapat</p>
+            </div>
+          </div>
+          <div class="welcome">
+            <h2>Selamat datang 👋</h2>
+            <p>Rekam pembicaraan, dapatkan transkrip, lalu biarkan AI membuat notulen.</p>
+          </div>
+        </header>
+        <main class="content">
+          <div class="card record" onclick="show('record')">
+            <div style="display: flex; align-items: center; gap: 13px">
+              <div class="mic">🎙️</div>
+              <div>
+                <h3>Mulai Rapat</h3>
+                <p>Rekam & transkrip secara otomatis</p>
+              </div>
+            </div>
+            <div class="arrow">›</div>
+          </div>
+          <div class="section-title">
+            <h3>Rapat Terbaru</h3>
+            <span onclick="show('meetings')">Lihat semua</span>
+          </div>
+          <div class="card meeting" onclick="show('transcript')">
+            <div class="meeting-icon">📋</div>
+            <div>
+              <h4>Rapat Koordinasi TKA SD</h4>
+              <p>7 Okt 2026 • 01:24:36</p>
+            </div>
+            <span class="badge">Selesai</span>
+          </div>
+          <div class="card meeting" onclick="show('summary')">
+            <div class="meeting-icon">📝</div>
+            <div>
+              <h4>Evaluasi Program Sekolah</h4>
+              <p>6 Okt 2026 • 00:52:18</p>
+            </div>
+            <span class="badge">Selesai</span>
+          </div>
+          <div class="section-title"><h3>Akses Cepat</h3></div>
+          <div class="card meeting" onclick="show('summary')">
+            <div class="meeting-icon">🤖</div>
+            <div>
+              <h4>Ringkasan AI</h4>
+              <p>Keputusan & tindak lanjut rapat</p>
+            </div>
+            <span>›</span>
+          </div>
+          <div class="card meeting" onclick="show('export')">
+            <div class="meeting-icon">📤</div>
+            <div>
+              <h4>Ekspor Notulen</h4>
+              <p>PDF, DOCX, TXT, XLSX</p>
+            </div>
+            <span>›</span>
+          </div>
+        </main>
+      </section>
+
+      <section id="record" class="screen">
+        <div class="backbar">
+          <button onclick="show('home')">‹</button>
+          <h2>Rekam Rapat</h2>
+        </div>
+        <main class="content">
+          <div class="card form-card">
+            <h3>Informasi Rapat</h3>
+            <input class="input" value="Rapat Koordinasi TKA SD" aria-label="Judul rapat" />
+            <input class="input" value="Ruang Rapat Dinas" aria-label="Lokasi" />
+            <div class="wave" id="wave"></div>
+            <div class="status" id="status">● Siap merekam</div>
+            <div class="timer" id="timer">00:00:00</div>
+            <div class="controls">
+              <button class="ctrl" onclick="toggleRecord()">⏸</button>
+              <button class="ctrl stop" onclick="finishRecord()">■</button>
+              <button class="ctrl" onclick="toast('Penanda waktu ditambahkan')">🔖</button>
+            </div>
+            <div class="note">
+              🎧 <b>Perekaman latar belakang</b><br />Versi Android native dapat tetap merekam
+              ketika layar dikunci. Audio disimpan bertahap agar aman jika koneksi terputus.
+            </div>
+          </div>
+          <div class="card">
+            <b style="font-size: 13px">Transkripsi langsung</b>
+            <div class="trans">
+              <div class="avatar">1</div>
+              <div>
+                <time>00:00:12</time><strong>Pembicara 1</strong>
+                <p>Selamat pagi, kita mulai rapat koordinasi hari ini.</p>
+              </div>
+            </div>
+          </div>
+        </main>
+      </section>
+
+      <section id="transcript" class="screen">
+        <div class="backbar">
+          <button onclick="show('home')">‹</button>
+          <h2>Transkrip Rapat</h2>
+        </div>
+        <main class="content">
+          <div class="card">
+            <b>Rapat Koordinasi TKA SD</b>
+            <div class="summary-meta">7 Oktober 2026 • 09:00–10:24 • 01:24:36</div>
+          </div>
+          <div class="tabs">
+            <button class="tab active">Transkrip</button
+            ><button class="tab" onclick="show('speakers')">Pembicara</button
+            ><button class="tab" onclick="show('summary')">Ringkasan</button>
+          </div>
+          <input class="search" placeholder="🔍 Cari dalam transkrip..." />
+          <div class="card">
+            <div class="trans">
+              <div class="avatar">1</div>
+              <div>
+                <time>00:00:12</time><strong>Pembicara 1</strong>
+                <p>Selamat pagi, kita mulai rapat koordinasi TKA tahun ini.</p>
+              </div>
+            </div>
+            <div class="trans">
+              <div class="avatar" style="background: #16a673">2</div>
+              <div>
+                <time>00:00:28</time><strong>Pembicara 2</strong>
+                <p>Baik, untuk data peserta, semuanya sudah kami siapkan.</p>
+              </div>
+            </div>
+            <div class="trans highlight">
+              <div class="avatar">1</div>
+              <div>
+                <time>00:00:47</time><strong>Pembicara 1</strong>
+                <p>Kita perlu memastikan data NISN sudah valid sebelum tanggal 10.</p>
+              </div>
+            </div>
+            <div class="trans">
+              <div class="avatar" style="background: #f59e0b">3</div>
+              <div>
+                <time>00:01:12</time><strong>Pembicara 3</strong>
+                <p>Untuk jadwal pelaksanaan, apakah sudah ditetapkan?</p>
+              </div>
+            </div>
+            <div class="trans">
+              <div class="avatar" style="background: #16a673">2</div>
+              <div>
+                <time>00:01:28</time><strong>Pembicara 2</strong>
+                <p>Sudah, pelaksanaan direncanakan pada minggu ketiga bulan ini.</p>
+              </div>
+            </div>
+          </div>
+          <button
+            class="card"
+            style="width: 100%; border: 0; background: #0757a8; color: #fff; font-weight: 700"
+            onclick="show('summary')"
+          >
+            🤖 Buat Ringkasan AI
+          </button>
+        </main>
+      </section>
+
+      <section id="summary" class="screen">
+        <div class="backbar">
+          <button onclick="show('home')">‹</button>
+          <h2>Ringkasan Rapat</h2>
+        </div>
+        <main class="content">
+          <div class="card">
+            <h3 class="summary-title">Rapat Koordinasi TKA SD</h3>
+            <div class="summary-meta">7 Oktober 2026 • 01:24:36 • Ruang Rapat Dinas</div>
+            <div class="tabs">
+              <button class="tab active">Ringkasan</button><button class="tab">Keputusan</button
+              ><button class="tab">Tugas</button><button class="tab">Notulen</button>
+            </div>
+            <div class="ai">
+              <strong>✨ RINGKASAN AI</strong>
+              <p>
+                Rapat membahas persiapan pelaksanaan TKA SD, dengan fokus pada validasi data
+                peserta, penetapan jadwal, dan pembagian tugas. Seluruh pihak sepakat menyelesaikan
+                verifikasi data sebelum tanggal 10.
+              </p>
+            </div>
+            <b style="font-size: 13px">Pokok Pembahasan</b>
+            <ol class="list">
+              <li>Persiapan pelaksanaan TKA SD tahun ini</li>
+              <li>Verifikasi dan validasi data peserta</li>
+              <li>Jadwal pelaksanaan</li>
+              <li>Pembagian tugas dan tanggung jawab</li>
+              <li>Hal-hal lain yang perlu dipersiapkan</li>
+            </ol>
+            <b style="font-size: 13px">Kesimpulan</b>
+            <p style="font-size: 12px; line-height: 1.6">
+              Semua pihak sepakat menyelesaikan verifikasi data peserta dan memastikan kesiapan
+              sekolah sesuai jadwal.
+            </p>
+          </div>
+          <div class="card">
+            <b style="font-size: 13px">Keputusan & Tindak Lanjut</b>
+            <div class="task"><b>Tugas</b><b>PIC</b><b>Deadline</b></div>
+            <div class="task">
+              <span>Verifikasi data siswa</span><span>Operator</span><span>9 Okt</span>
+            </div>
+            <div class="task">
+              <span>Rekap data peserta</span><span>Korwil</span><span>10 Okt</span>
+            </div>
+            <div class="task">
+              <span>Persiapan ruang</span><span>Kepsek</span><span>14 Okt</span>
+            </div>
+          </div>
+          <button
+            class="card"
+            style="width: 100%; border: 0; background: #0757a8; color: #fff; font-weight: 700"
+            onclick="show('export')"
+          >
+            📤 Ekspor Hasil Rapat
+          </button>
+        </main>
+      </section>
+
+      <section id="speakers" class="screen">
+        <div class="backbar">
+          <button onclick="show('transcript')">‹</button>
+          <h2>Pembicara</h2>
+        </div>
+        <main class="content">
+          <div class="card">
+            <p style="font-size: 12px; color: #667085">
+              Pembicara terdeteksi otomatis. Nama dapat diubah setelah rapat.
+            </p>
+            <div class="meeting">
+              <div class="avatar">1</div>
+              <div>
+                <b style="font-size: 13px">Pembicara 1</b>
+                <p style="font-size: 11px; color: #718096">Durasi 00:42:15 (34%)</p>
+              </div>
+              <span>✏️</span>
+            </div>
+            <hr style="border: 0; border-top: 1px solid var(--line)" />
+            <div class="meeting">
+              <div class="avatar" style="background: #16a673">2</div>
+              <div>
+                <b style="font-size: 13px">Pembicara 2</b>
+                <p style="font-size: 11px; color: #718096">Durasi 00:28:36 (23%)</p>
+              </div>
+              <span>✏️</span>
+            </div>
+            <hr style="border: 0; border-top: 1px solid var(--line)" />
+            <div class="meeting">
+              <div class="avatar" style="background: #f59e0b">3</div>
+              <div>
+                <b style="font-size: 13px">Pembicara 3</b>
+                <p style="font-size: 11px; color: #718096">Durasi 00:15:22 (12%)</p>
+              </div>
+              <span>✏️</span>
+            </div>
+          </div>
+          <button
+            class="card"
+            style="width: 100%; border: 0; background: #0757a8; color: #fff; font-weight: 700"
+          >
+            ＋ Tambah Pembicara
+          </button>
+        </main>
+      </section>
+
+      <section id="export" class="screen">
+        <div class="backbar">
+          <button onclick="show('summary')">‹</button>
+          <h2>Ekspor Hasil Rapat</h2>
+        </div>
+        <main class="content">
+          <div class="card">
+            <b>Rapat Koordinasi TKA SD</b>
+            <div class="summary-meta">7 Oktober 2026 • 01:24:36</div>
+          </div>
+          <div class="card">
+            <b style="font-size: 13px">Pilih Format</b>
+            <div class="export-grid" style="margin-top: 12px">
+              <button class="export" onclick="toast('PDF sedang disiapkan')">
+                🔴 <b>PDF</b><span>Notulen lengkap</span>
+              </button>
+              <button class="export" onclick="toast('DOCX sedang disiapkan')">
+                🔵 <b>DOCX</b><span>Notulen editable</span>
+              </button>
+              <button class="export" onclick="toast('TXT sedang disiapkan')">
+                ⚫ <b>TXT</b><span>Transkrip teks</span>
+              </button>
+              <button class="export" onclick="toast('XLSX sedang disiapkan')">
+                🟢 <b>XLSX</b><span>Daftar tugas</span>
+              </button>
+            </div>
+          </div>
+          <div class="card" onclick="toast('Teks disalin ke clipboard')">
+            📋 <b>Salin ke Clipboard</b><br /><span style="font-size: 10px; color: #718096"
+              >Salin hasil rapat ke papan klip</span
+            >
+          </div>
+          <div class="card" onclick="toast('Berbagi WhatsApp dibuka')">
+            🟢 <b>Bagikan ke WhatsApp</b><br /><span style="font-size: 10px; color: #718096"
+              >Kirim ringkasan rapat</span
+            >
+          </div>
+        </main>
+      </section>
+
+      <nav class="bottom">
+        <button class="nav active" onclick="show('home')"><b>⌂</b>Beranda</button>
+        <button class="nav" onclick="show('record')"><b>🎙</b>Rapat</button>
+        <button class="nav" onclick="show('summary')"><b>▤</b>Notulen</button>
+        <button class="nav" onclick="toast('Profil pengguna')"><b>●</b>Akun</button>
+      </nav>
+      <div id="toast" class="toast"></div>
+    </div>
+    <script>
+      let seconds = 0,
+        timer = null,
+        recording = false;
+      const screens = [...document.querySelectorAll('.screen')];
+      function show(id) {
+        screens.forEach((s) => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      function toggleRecord() {
+        recording = !recording;
+        document.getElementById('status').textContent = recording
+          ? '● Sedang merekam...'
+          : '● Rekaman dijeda';
+        if (recording) {
+          timer = setInterval(() => {
+            seconds++;
+            document.getElementById('timer').textContent = new Date(seconds * 1000)
+              .toISOString()
+              .substr(11, 8);
+          }, 1000);
+        } else clearInterval(timer);
+      }
+      function finishRecord() {
+        clearInterval(timer);
+        recording = false;
+        toast('Rekaman selesai. Transkrip sedang diproses...');
+        setTimeout(() => show('transcript'), 700);
+      }
+      function toast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2200);
+      }
+      const wave = document.getElementById('wave');
+      for (let i = 0; i < 30; i++) {
+        const e = document.createElement('i');
+        e.style.height = 18 + Math.random() * 55 + 'px';
+        e.style.animationDelay = Math.random() * -0.9 + 's';
+        wave.appendChild(e);
+      }
+    </script>
+  </body>
+</html>

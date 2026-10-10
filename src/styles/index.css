@@ -1,0 +1,30 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-brand: #0757a8;
+  --color-brand-secondary: #0b72d9;
+  --color-surface: #f8fafc;
+  --color-light: #eef6ff;
+  --color-ink: #172033;
+  --color-muted: #718096;
+  --color-line: #e4ebf3;
+  --color-success: #12a66a;
+  --color-danger: #ef4444;
+
+  --font-sans: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}

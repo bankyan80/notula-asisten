@@ -1,0 +1,25 @@
+dist/
+node_modules/
+coverage/
+dev-dist/
+*.local
+.env
+.env.*.local
+.DS_Store
+
+# Capacitor (generated — hasil `cap sync` / Gradle)
+android/app/src/main/assets/public/
+android/app/src/main/assets/capacitor.config.json
+android/app/build/
+android/build/
+android/capacitor-cordova-android-plugins/build/
+android/.gradle/
+android/local.properties
+
+# Sertifikat HTTPS development (jangan pernah di-commit)
+certs/
+
+# Binary & spreadsheet non-proyek
+*.deb
+*.xls
+*.xlsx
